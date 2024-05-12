@@ -1,0 +1,64 @@
+﻿@model Library.VM.VmBook
+@{
+    ViewBag.Title = "Index";
+    var BV = Model.BookId > 0 ? "Update" : "Add";
+    var indexItem = 0;
+}
+
+<h2>Master Details</h2>
+@using (Ajax.BeginForm("Index", "Home", new AjaxOptions { HttpMethod = "" }, new { enctype = "multipart/form-data" }))
+{
+    @Html.HiddenFor(x => x.BookId)
+    @Html.LabelFor(x => x.BookName)
+    @Html.TextBoxFor(x => x.BookName)
+    <br />
+    <br />
+    @Html.LabelFor(x => x.PublishDate)
+    <input type="date" id="PublishDate" name="PublishDate">
+    <br />
+    <br />
+    @Html.LabelFor(x => x.Available)
+    @Html.RadioButtonFor(x => x.Available, "Yes")
+    @Html.LabelFor(x => x.Available, "Yes")
+    @Html.RadioButtonFor(x => x.Available, "No")
+    @Html.LabelFor(x => x.Available, "No")
+    <br />
+    <br />
+    @Html.LabelFor(x => x.Image)
+    <input type="file" id="img" name="img">
+    <br />
+    <button type="submit"id="btnUpdate" name="Add" onclick="">@BV</button>
+    <a href="/Home/Index">RESET</a>
+
+    <table>
+        <tr>
+            <th>AuthorName</th>
+            <th>Price</th>
+            <th>
+                <button type="button"id="" name="" onclick="addItem()">AddItem</button>
+            </th>
+        </tr>
+        <tbody id="tAD">
+            @foreach(var item in Model.LBookDetails)
+            {
+                indexItem++;
+                <tr id="tr_@indexItem">
+                    <td><input type="text"id="AuthorName" name="AuthorName" value="@item.AuthorName" /></td>
+                    <td><input type="text" id="Price" name="Price" value="@item.Price" /></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    @Html.Partial("PartialView")
+}
+<script>
+    var indexItem =@indexItem;
+    function addItem()
+    {
+        indexItem += 1;
+        var TRs = '<tr id="tr_' + indexItem + '"> <td><input type="text"id="AuthorName_1" name="AuthorName" value="" /></td>'
+            + ' <td><input type="text" id="Price_' + indexItem + '" name="Price" value="" /></td>'
+            + '<tr>';
+        document.getElementById('tAD').innerHTML += TRs;
+    }
+</script>
